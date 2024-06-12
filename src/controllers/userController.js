@@ -3,19 +3,30 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcryptjs");
 
+
 exports.getUser = async (req, res) => {
   const { userId } = req.params;
   try {
+    // Ensure userId is parsed as an integer
+    const id = parseInt(userId, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid user ID" });
+    }
+
     const user = await prisma.user.findUnique({
-      where: { id: parseInt(userId) },
+      where: {
+        id: id, // Ensure id is an integer
+      },
     });
+
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    res.status(200).json(user);
+
+    res.json(user);
   } catch (error) {
-    console.log("Get user error:", error);
-    res.status(500).json({ error: "Failed to fetch user data" });
+    console.error("Error fetching user:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
