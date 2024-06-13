@@ -1,6 +1,6 @@
-# Sleep Tracker API
+# Image Upload Platform API
 
-This repository contains the code for the Sleep Tracker API, which is designed to manage sleep records for users.
+This repository contains the code for an Image Upload Platform, allowing users to upload, view, and manage their images. The platform is built using Node.js, Express, Prisma ORM for database operations, and Next.js for the frontend.
 
 ## Setup
 
