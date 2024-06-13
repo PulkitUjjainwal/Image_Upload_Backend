@@ -203,6 +203,6 @@ https://image-upload-backend-m1dw.onrender.com/api/images
 https://image-upload-backend-m1dw.onrender.com/api/users
 ```
 
-#### Deployed Link for Image Upload Platform
+# Deployed Link for Image Upload Platform
 Live Link - https://imageuploadplatform.netlify.app/
 
