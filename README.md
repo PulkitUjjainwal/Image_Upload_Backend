@@ -1,136 +1,168 @@
-Image Upload Platform
-Overview
-This repository contains the code for an Image Upload Platform, allowing users to upload, view, and manage their images. The platform is built using Node.js, Express, Prisma ORM for database operations, and Next.js for the frontend.
+# Sleep Tracker API
 
-Setup
-To set up the project locally, follow these steps:
+This repository contains the code for the Sleep Tracker API, which is designed to manage sleep records for users.
 
-1. Clone the repository:
-bash
-Copy code
-git clone https://github.com/your-username/image-upload-platform.git
-cd image-upload-platform
-2. Install dependencies:
-bash
-Copy code
+## Setup
+
+To set up the project, follow these steps:
+
+#### 1. Clone the repository:
+
+```bash
+git clone https://github.com/88h88h/Backend-assignment-sleep-tracker.git
+```
+
+#### 2. Navigate to the root directory:
+
+```bash
+cd Backend-assignment-sleep-tracker
+```
+
+#### 3. Install dependencies:
+
+```bash
 npm install
-3. Set up the MySQL Database
-Create a MySQL database for storing image metadata. Adjust the database connection details in .env file.
+```
+#### 4. Setup MongoDB Database with Database Name 'SleepDB' and collection name 'records'
 
-4. Configure environment variables:
-Create a .env file in the root directory and add the following environment variables:
+#### 5. Make a '.env.development' in the root directory and write in it
 
-env
-Copy code
+```bash 
 PORT=5000
-MYSQL_HOST=localhost
-MYSQL_USER=root
-MYSQL_PASSWORD=password
-MYSQL_DATABASE=image_upload_db
-JWT_SECRET=your_jwt_secret
-5. Run the server:
-bash
-Copy code
-npm start
-The server should now be running on http://localhost:5000.
+MONGO_URI=WRITE_YOUR_MONGO_URI
+```
 
-Features
-1. User Authentication
-Implement JWT-based authentication for secure access to the platform.
-2. Image Upload
-Allow users to upload images to the platform.
-3. Image Processing
-Resize uploaded images to 400x400 pixels and convert them to PNG format.
-4. Image Storage
-Store image metadata and file paths in a MySQL database using Prisma ORM.
-5. Scheduled Image Publication
-Enable users to schedule the publication of their uploaded images for future dates using Cron Jobs.
-6. Image Retrieval
-Provide endpoints to retrieve and display images to users efficiently.
-7. API Security
-Implement security measures such as rate-limiting, CSRF protection, and input validation.
-8. User Profile
-Allow users to manage their profile settings and view their uploaded images.
-API Endpoints
-POST /api/auth/register
-Register a new user.
-Request Body:
-json
-Copy code
-{
-  "username": "example_user",
-  "password": "password123"
-}
-Response:
-json
-Copy code
-{
-  "success": true,
-  "message": "User registered successfully"
-}
-POST /api/auth/login
-Authenticate and login a user.
-Request Body:
-json
-Copy code
-{
-  "username": "example_user",
-  "password": "password123"
-}
-Response:
-json
-Copy code
-{
-  "success": true,
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-POST /api/images/upload
-Upload an image.
-Request Body:
-Form-data with image field for the image file.
-Response:
-json
-Copy code
-{
-  "success": true,
-  "message": "Image uploaded successfully",
-  "imageUrl": "https://example.com/uploads/image.jpg"
-}
-GET /api/images/user/
-Retrieve images uploaded by a specific user.
-Response:
-json
-Copy code
-{
-  "success": true,
-  "images": [
-    {
-      "id": 1,
-      "imageUrl": "https://example.com/uploads/image1.jpg",
-      "uploadedAt": "2024-06-13T12:00:00Z"
-    },
-    {
-      "id": 2,
-      "imageUrl": "https://example.com/uploads/image2.jpg",
-      "uploadedAt": "2024-06-13T13:00:00Z"
-    }
-  ]
-}
-DELETE /api/images/
-Delete an image by its ID.
-Response:
-json
-Copy code
-{
-  "success": true,
-  "message": "Image deleted successfully"
-}
-Testing
-To run tests, execute the following command:
+#### 6. Run the server:
 
-bash
-Copy code
+```bash
+npm run start-dev
+```
+
+The server should now be running on 
+
+```bash 
+http://localhost:5000. 
+```
+and the APIs can be accessed through 
+
+```bash 
+http://localhost:5000/api. 
+```
+
+## Testing
+
+- Make a test database 'sleepDB_test' with a collection named 'records' 
+
+- Make a '.env.test' in the root directory and write in it
+
+```bash 
+PORT=5000
+MONGO_URI=WRITE_YOUR_TEST_DB_MONGO_URI
+```
+
+The test file 'api.test.js' is provided in the 'test' folder of the root directory. 
+
+To run the tests, use the following command:
+
+```bash
 npm run test
-Live API
-The API is hosted live at https://your-image-upload-api.com. You can use this URL to interact with the API endpoints directly.
+```
+
+
+
+## API Endpoints
+
+The Sleep Tracker API provides the following endpoints: 
+
+
+### 1. Add a Sleep Record
+
+Request Body should contain a valid JSON object.
+
+```bash
+- URL: /api/sleep
+- Method: POST
+- Request Body:
+  - userId: String (required) - The ID of the user.
+  - hours: Number (required) - The number of hours slept.
+- Success Response:
+  - Code: 201
+  - Content:
+    {
+      "success": true,
+      "newRecord": {
+        "_id": "61057c0572f1180012345678",
+        "userId": "user123",
+        "hours": 8,
+        "timestamp": "2022-07-31T08:00:00.000Z"
+      }
+    }
+- Error Response:
+
+  If body has missing field(s)  
+  - Code: 400
+  - Content: Missing required fields
+
+  If body contains an invalid input
+  - Code: 400
+  - Content: Invalid hours value, it must be a positive number
+  ```
+
+### 2. Retrieve Sleep Records
+
+```bash
+- URL: /api/sleep/:userId
+- Method: GET
+- Path Parameters:
+  - userId: String (required) - The ID of the user.
+- Success Response:
+  - Code: 200
+  - Content: Array of sleep records for the specified user.
+- Error Response:
+  - Code: 404
+  ```
+
+### 3. Delete a Sleep Record
+
+Note - recordId should be strictly a valid MongoDB id  
+
+```bash
+- URL: /api/sleep/:recordId
+- Method: DELETE
+- Path Parameters:
+  - recordId: String (required) - The MongoDB ID of the sleep record.
+- Success Response:
+  - Code: 200
+  - Content: Record deleted
+- Error Response:
+  - Code: 404
+  - Content: Record not found
+
+  -Code: 500
+  - Content: {Error Message, Suggestion : "Use a valid MongoDB id"}
+  ```
+
+## Live API
+
+The API is also hosted on https://backend-assignment-sleep-tracker.onrender.com/api/. You can use this URL to interact with the API endpoints directly. \
+Note: The API might take around 1 minute to load, only for the first time.
+
+### POST Endpoint
+
+```bash
+https://backend-assignment-sleep-tracker.onrender.com/api/sleep
+```
+
+### GET Endpoint
+
+```bash
+https://backend-assignment-sleep-tracker.onrender.com/api/sleep/:userId
+```
+
+### DELETE Endpoint
+
+```bash
+https://backend-assignment-sleep-tracker.onrender.com/api/sleep/:recordId
+```
+
 
