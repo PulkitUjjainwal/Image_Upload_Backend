@@ -9,16 +9,18 @@ To set up the project, follow these steps:
 #### 1. Clone the repository:
 
 ```bash
-git clone https://github.com/88h88h/Backend-assignment-sleep-tracker.git
+git clone https://github.com/your-username/image-upload-platform.git
+cd image-upload-platform
 ```
 
-#### 2. Navigate to the root directory:
+#### 2. Install the Dependencies:
 
 ```bash
-cd Backend-assignment-sleep-tracker
+npm install
 ```
 
-#### 3. Install dependencies:
+#### 3.  Set up the MySQL Database:
+Create a MySQL database for storing image metadata. Adjust the database connection details in .env file.
 
 ```bash
 npm install
