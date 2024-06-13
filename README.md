@@ -22,33 +22,35 @@ npm install
 #### 3.  Set up the MySQL Database:
 Create a MySQL database for storing image metadata. Adjust the database connection details in .env file.
 
+
+#### 4. Configure environment variables:
+Create a .env file in the root directory and add the following environment variables:
+
+```env 
+PORT=3003
+MYSQL_HOST=localhost
+MYSQL_USER=root
+MYSQL_PASSWORD=password
+MYSQL_DATABASE=image_upload_db
+JWT_SECRET=your_jwt_secret
+```
+
+#### 5. Run the server:
+
 ```bash
-npm install
-```
-#### 4. Setup MongoDB Database with Database Name 'SleepDB' and collection name 'records'
-
-#### 5. Make a '.env.development' in the root directory and write in it
-
-```bash 
-PORT=5000
-MONGO_URI=WRITE_YOUR_MONGO_URI
+node start
 ```
 
-#### 6. Run the server:
-
-```bash
-npm run start-dev
-```
 
 The server should now be running on 
 
 ```bash 
-http://localhost:5000. 
+http://localhost:3003. 
 ```
 and the APIs can be accessed through 
 
 ```bash 
-http://localhost:5000/api. 
+http://localhost:3003/api. 
 ```
 
 ## Testing
@@ -74,75 +76,59 @@ npm run test
 
 ## API Endpoints
 
-The Sleep Tracker API provides the following endpoints: 
+The Image Upload Platform Backend API provides the following endpoints: 
 
 
-### 1. Add a Sleep Record
+### 1. Register a User
 
 Request Body should contain a valid JSON object.
 
 ```bash
-- URL: /api/sleep
+- URL: /api/auth/register
 - Method: POST
 - Request Body:
-  - userId: String (required) - The ID of the user.
-  - hours: Number (required) - The number of hours slept.
+  - email: String (required) - The email ID of the user.
+  - password: String (required) - The Password of hours slept.
 - Success Response:
   - Code: 201
   - Content:
     {
       "success": true,
-      "newRecord": {
-        "_id": "61057c0572f1180012345678",
-        "userId": "user123",
-        "hours": 8,
-        "timestamp": "2022-07-31T08:00:00.000Z"
-      }
+      "message": "User registered successfully"
     }
-- Error Response:
-
-  If body has missing field(s)  
-  - Code: 400
-  - Content: Missing required fields
-
-  If body contains an invalid input
-  - Code: 400
-  - Content: Invalid hours value, it must be a positive number
   ```
 
-### 2. Retrieve Sleep Records
+### 2. User Login
 
 ```bash
-- URL: /api/sleep/:userId
-- Method: GET
+- URL: /api/auth/login
+- Method: POST
 - Path Parameters:
-  - userId: String (required) - The ID of the user.
+  - email: String (required) - The email ID of the user.
+  - password: String (required) - The Password of hours slept.
 - Success Response:
-  - Code: 200
-  - Content: Array of sleep records for the specified user.
-- Error Response:
-  - Code: 404
+  - "success": true,
+  - "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
   ```
 
-### 3. Delete a Sleep Record
+### 3. Uploading an Image
 
-Note - recordId should be strictly a valid MongoDB id  
+Note: Request Body should contain Form-data with image field for the image file.
 
 ```bash
-- URL: /api/sleep/:recordId
-- Method: DELETE
+- URL: /api/images/upload
+- Method: POST
 - Path Parameters:
-  - recordId: String (required) - The MongoDB ID of the sleep record.
+  - Image (.jpeg , .jpg or .png)
+  - JWT token ( generated during login )
 - Success Response:
-  - Code: 200
-  - Content: Record deleted
-- Error Response:
-  - Code: 404
-  - Content: Record not found
+  - "success": true,
+  - "message": "Image uploaded successfully",
+  - "imageUrl": "https://example.com/uploads/image.jpg"
 
-  -Code: 500
-  - Content: {Error Message, Suggestion : "Use a valid MongoDB id"}
   ```
+
+
 
 ## Live API
 
