@@ -16,7 +16,8 @@ cd image-upload-platform
 #### 2. Install the Dependencies:
 
 ```bash
-npm install
+npm install @prisma/client bcryptjs bull cloudinary cors csurf datauri dotenv express express-rate-limit express-validator helmet jsonwebtoken multer multer-storage-cloudinary node-cron nodemon prisma sharp
+
 ```
 
 #### 3.  Set up the MySQL Database:
