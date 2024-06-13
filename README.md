@@ -1,6 +1,6 @@
 # Image Upload Platform API
 
-This repository contains the code for an Image Upload Platform, allowing users to upload, view, and manage their images. The platform is built using Node.js, Express, Prisma ORM for database operations.
+This repository contains the code for an Image Upload Platform, allowing users to upload, view, and manage their images. The platform is built using Node.js, Express, Prisma ORM, and MySQL. Key features include JWT-based user authentication, image upload and processing (resize and format conversion), image storage with metadata, scheduled image publication with Cron Jobs, image retrieval, and API security measures (rate limiting, CSRF protection)
 
 ## Setup
 
