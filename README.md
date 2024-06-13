@@ -67,8 +67,8 @@ Request Body should contain a valid JSON object.
 - URL: /api/auth/register
 - Method: POST
 - Request Body:
-  - email: String (required) - The email ID of the user.
-  - password: String (required) - The Password of hours slept.
+  - email: String (required) - The email id of the user.
+  - password: String (required) - The password of the user.
 - Success Response:
   - Code: 201
   - Content:
@@ -85,7 +85,7 @@ Request Body should contain a valid JSON object.
 - Method: POST
 - Path Parameters:
   - email: String (required) - The email ID of the user.
-  - password: String (required) - The Password of hours slept.
+  - password: String (required) - The password of the user.
 - Success Response:
   - "success": true,
   - "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -100,7 +100,6 @@ Note: Request Body should contain Form-data with image field for the image file.
 - Method: POST
 - Path Parameters:
   - Image (.jpeg , .jpg or .png)
-  - JWT token ( generated during login )
 - Success Response:
   - "success": true,
   - "message": "Image uploaded successfully",
@@ -108,14 +107,13 @@ Note: Request Body should contain Form-data with image field for the image file.
 
   ```
 
-### 2. User Login
+### 4. Fetch Uploaded Images ( for the specific user )
 
 ```bash
-- URL: /api/auth/login
-- Method: POST
+- URL: /api/images/images/:userId
+- Method: GET
 - Path Parameters:
-  - email: String (required) - The email ID of the user.
-  - password: String (required) - The Password of hours slept.
+  - userID : int ( unique )
 - Success Response:
   - "success": true,
   - "images": [
@@ -134,29 +132,56 @@ Note: Request Body should contain Form-data with image field for the image file.
   ```
 
 
+### 5. Fetch User Information
+
+```bash
+- URL: /api/users/:userId
+- Method: GET
+- Path Parameters:
+  - userID : int ( unique )
+- Success Response:
+  - "success": true,
+  -  "id" : 1
+  - "email" : "xyz@gmail.com"
+  - "images": [
+    {
+      "id": 1,
+      "imageUrl": "https://example.com/uploads/image1.jpg",
+      "uploadedAt": "2024-06-13T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "imageUrl": "https://example.com/uploads/image2.jpg",
+      "uploadedAt": "2024-06-13T13:00:00Z"
+    }
+  ]
+  ```
+
+
+
 
 
 ## Live API
 
-The API is also hosted on https://backend-assignment-sleep-tracker.onrender.com/api/. You can use this URL to interact with the API endpoints directly. \
+The API is also hosted on https://image-upload-backend-m1dw.onrender.com/api/. You can use this URL to interact with the API endpoints directly. \
 Note: The API might take around 1 minute to load, only for the first time.
 
-### POST Endpoint
+### User Authentication API
 
 ```bash
-https://backend-assignment-sleep-tracker.onrender.com/api/sleep
+https://image-upload-backend-m1dw.onrender.com/api/auth
 ```
 
-### GET Endpoint
+### Image API for image retrival and Uploading
 
 ```bash
-https://backend-assignment-sleep-tracker.onrender.com/api/sleep/:userId
+https://image-upload-backend-m1dw.onrender.com/api/images
 ```
 
-### DELETE Endpoint
+### User API for fetching user data or updating
 
 ```bash
-https://backend-assignment-sleep-tracker.onrender.com/api/sleep/:recordId
+https://image-upload-backend-m1dw.onrender.com/api/users
 ```
 
 
