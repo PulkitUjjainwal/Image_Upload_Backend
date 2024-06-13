@@ -69,7 +69,7 @@ http://localhost:3003.
 and the APIs can be accessed through 
 
 ```bash 
-http://localhost:3003/api. 
+http://localhost:3003/api
 ```
 
 
