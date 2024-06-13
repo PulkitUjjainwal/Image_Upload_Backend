@@ -21,27 +21,45 @@ npm install @prisma/client bcryptjs bull cloudinary cors csurf datauri dotenv ex
 ```
 
 #### 3.  Set up the MySQL Database:
-Create a MySQL database for storing image metadata. Adjust the database connection details in .env file.
+Create a MySQL database for storing image metadata. 
 
 
-#### 4. Configure environment variables:
+#### 4.  Initialize the Prisma Schema
+Initialize the prisma Schema using the follow command
+
+```bash
+prisma init
+```
+
+#### 5. Setup Cloudinary:
+Login and Setup Cloudinary for Image uploading. and get all the required env variables.
+
+
+#### 6. Configure environment variables:
 Create a .env file in the root directory and add the following environment variables:
 
 ```env 
 PORT=3003
-MYSQL_HOST=localhost
-MYSQL_USER=root
-MYSQL_PASSWORD=password
-MYSQL_DATABASE=image_upload_db
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 JWT_SECRET=your_jwt_secret
+DATABASE_URL = "mysql://USER:PASSWORD@HOST:PORT/DATABASE"
 ```
 
-#### 5. Run the server:
+#### 7. Prisma migrations:
+Run the Prisma migrations to set up the database schema:
+
+```bash
+npx prisma migrate dev
+
+```
+
+#### 8. Run the server:
 
 ```bash
 node start
 ```
-
 
 The server should now be running on 
 
