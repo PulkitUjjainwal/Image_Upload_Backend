@@ -53,26 +53,6 @@ and the APIs can be accessed through
 http://localhost:3003/api. 
 ```
 
-## Testing
-
-- Make a test database 'sleepDB_test' with a collection named 'records' 
-
-- Make a '.env.test' in the root directory and write in it
-
-```bash 
-PORT=5000
-MONGO_URI=WRITE_YOUR_TEST_DB_MONGO_URI
-```
-
-The test file 'api.test.js' is provided in the 'test' folder of the root directory. 
-
-To run the tests, use the following command:
-
-```bash
-npm run test
-```
-
-
 
 ## API Endpoints
 
@@ -127,6 +107,32 @@ Note: Request Body should contain Form-data with image field for the image file.
   - "imageUrl": "https://example.com/uploads/image.jpg"
 
   ```
+
+### 2. User Login
+
+```bash
+- URL: /api/auth/login
+- Method: POST
+- Path Parameters:
+  - email: String (required) - The email ID of the user.
+  - password: String (required) - The Password of hours slept.
+- Success Response:
+  - "success": true,
+  - "images": [
+    {
+      "id": 1,
+      "imageUrl": "https://example.com/uploads/image1.jpg",
+      "uploadedAt": "2024-06-13T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "imageUrl": "https://example.com/uploads/image2.jpg",
+      "uploadedAt": "2024-06-13T13:00:00Z"
+    }
+  ]
+              
+  ```
+
 
 
 
