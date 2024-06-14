@@ -73,6 +73,7 @@ exports.singleUploadCtrl = (req, res, next) => {
   });
 };
 
+// cloud upload and processing
 exports.cloudUpload = async (req, res) => {
   try {
     if (!req.file) {

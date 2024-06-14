@@ -5,30 +5,30 @@ const bcrypt = require("bcryptjs");
 
 
 exports.getUser = async (req, res) => {
-  const { userId } = req.params;
-  try {
-    // Ensure userId is parsed as an integer
-    const id = parseInt(userId, 10);
-    if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid user ID" });
+    const { userId } = req.params;
+    try {
+      // Ensure userId is parsed as an integer
+      const id = parseInt(userId, 10);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid user ID" });
+      }
+  
+      const user = await prisma.user.findUnique({
+        where: {
+          id: id, // Ensure id is an integer
+        },
+      });
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ error: "Internal server error" });
     }
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: id, // Ensure id is an integer
-      },
-    });
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    res.json(user);
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
+  };
 
 exports.updateUser = async (req, res) => {
   const { userId } = req.params;
