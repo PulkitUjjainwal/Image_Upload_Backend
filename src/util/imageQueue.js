@@ -7,7 +7,12 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const imageQueue = new Queue("image processing", {
-  redis: { host: "127.0.0.1", port: 6379, maxRetriesPerRequest: 20 },
+  redis: {
+    socket: {
+      host: "redis-16013.c212.ap-south-1-1.ec2.redns.redis-cloud.com",
+      port: 16013,
+    },
+  },
 });
 
 imageQueue.process(2, async (job) => {
