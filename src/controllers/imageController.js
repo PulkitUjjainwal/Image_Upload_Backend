@@ -8,58 +8,6 @@ const sharp = require("sharp");
 
 const prisma = new PrismaClient();
 
-// const uploadToCloudinary = (buffer) => {
-//   return new Promise((resolve, reject) => {
-//     const stream = cloudinary.uploader.upload_stream(
-//       { folder: "Image_Upload" },
-//       (error, result) => {
-//         if (result) {
-//           resolve(result);
-//         } else {
-//           reject(error);
-//         }
-//       }
-//     );
-//     streamifier.createReadStream(buffer).pipe(stream);
-//   });
-// };
-
-// exports.upload = async (req, res) => {
-//   try {
-//     console.log(req.body);
-//     const userId = parseInt(req.body.userId); // Ensure userId is an integer
-//     const { name } = req.body;
-//     const result = await uploadToCloudinary(req.file.buffer);
-
-//     const image = await prisma.image.create({
-//       data: {
-//         url: result.secure_url,
-//         userId: userId,
-//         scheduledAt: new Date().toLocaleString(),
-//       },
-//     });
-
-//     res.json({ message: "Image uploaded successfully", success: true, image });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Error uploading image", err: error });
-//   }
-// };
-
-// exports.fetchByUsername = async (req, res) => {
-//   try {
-//     const { username } = req.params;
-//     const images = await prisma.image.findMany({
-//       where: {
-//         userId: parseInt(username),
-//       },
-//     });
-//     res.json(images);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Error fetching images" });
-//   }
-// };
 
 const singleUpload = upload.single("image");
 

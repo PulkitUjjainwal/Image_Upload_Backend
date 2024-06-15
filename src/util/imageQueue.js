@@ -3,17 +3,17 @@ const { dataUri } = require("../util/data-uri");
 const { cloudinaryUpload } = require("../util/cloudinary");
 const sharp = require("sharp");
 const { PrismaClient } = require("@prisma/client");
+require("dotenv").config;
 
 const prisma = new PrismaClient();
 
-const imageQueue = new Queue("image processing", {
-  redis: {
-    socket: {
-      host: "redis-16013.c212.ap-south-1-1.ec2.redns.redis-cloud.com",
-      port: 16013,
-    },
-  },
-});
+const redisConfig = {
+  host: process.env.REDIS_SERVER_HOST,
+  port: process.env.REDIS_SERVER_PORT,
+  password: process.env.REDIS_SERVER_PASSWORD, // Add your Redis password here
+};
+
+const imageQueue = new Queue("image processing", { redis: redisConfig });
 
 imageQueue.process(2, async (job) => {
   try {
