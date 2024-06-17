@@ -23,6 +23,8 @@ imageQueue.process(2, async (job) => {
       throw new Error("Input file is missing!");
     }
 
+    console.log("Job Scheduled At:", scheduledAt);
+
     const uploadResult = await cloudinaryUpload(file);
 
     await prisma.image.create({

@@ -5,9 +5,9 @@ const { dataUri } = require("../util/data-uri");
 const { cloudinaryUpload } = require("../util/cloudinary");
 const imageQueue = require("../util/imageQueue");
 const sharp = require("sharp");
+const { isValid } = require("date-fns/isValid");
 
 const prisma = new PrismaClient();
-
 
 const singleUpload = upload.single("image");
 
@@ -34,12 +34,21 @@ exports.cloudUpload = async (req, res) => {
       .toBuffer();
     const file64 = dataUri({ buffer, originalname: "image.png" }).content;
     const userId = req.user.userId;
-    const { scheduledAt } = req.body; // Get the scheduled time from the request body
+
+    const { scheduledAt } = req.body;
+    if (scheduledAt && isValid(new Date(scheduledAt))) {
+      parsedScheduledAt = new Date(scheduledAt);
+    } else {
+      parsedScheduledAt = new Date();
+    }
+
+    console.log("Parsed scheduledAt:", parsedScheduledAt);
+    // const parsedScheduledAt = scheduledAt ? new Date(scheduledAt) : new Date();
 
     const job = await imageQueue.add({
       file: file64,
       userId: userId,
-      scheduledAt: scheduledAt ? new Date(scheduledAt) : new Date(), // Default to current time if not provided
+      scheduledAt: parsedScheduledAt,
     });
 
     res.json({
