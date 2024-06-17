@@ -6,11 +6,13 @@ const { publishScheduledImages } = require("./src/util/cronJobs");
 const csrf = require("csurf");
 const csrfProtection = csrf({ cookie: true });
 const rateLimit = require("express-rate-limit");
+const moment = require("moment-timezone");
 
 dotenv.config();
 
 const app = express();
 const PORT = 3003;
+TZ = process.env.TZ;
 
 app.use(cors());
 app.use(helmet());
@@ -29,5 +31,10 @@ app.listen(PORT, () => {
 
   publishScheduledImages.start();
 });
+
+const now = moment().tz("Asia/Kolkata");
+console.log(
+  `Current time in Asia/Kolkata: ${now.format("YYYY-MM-DD HH:mm:ss Z")}`
+);
 
 module.exports = app;

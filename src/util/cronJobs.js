@@ -1,11 +1,12 @@
 const cron = require("node-cron");
 const { PrismaClient } = require("@prisma/client");
-
+const moment = require("moment-timezone");
 const prisma = new PrismaClient();
 
 const publishScheduledImages = cron.schedule("* * * * *", async () => {
   try {
-    const now = new Date();
+    const now = moment().tz("Asia/Kolkata").toDate();
+    console.log(`Current time: ${now.toISOString()}`);
 
     const imagesToPublish = await prisma.image.findMany({
       where: {

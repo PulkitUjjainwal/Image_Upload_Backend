@@ -5,7 +5,8 @@ const { dataUri } = require("../util/data-uri");
 const { cloudinaryUpload } = require("../util/cloudinary");
 const imageQueue = require("../util/imageQueue");
 const sharp = require("sharp");
-const { isValid } = require("date-fns/isValid");
+const { isValid, parseISO } = require("date-fns");
+const moment = require("moment-timezone");
 
 const prisma = new PrismaClient();
 
@@ -21,7 +22,6 @@ exports.singleUploadCtrl = (req, res, next) => {
   });
 };
 
-// cloud upload and processing
 exports.cloudUpload = async (req, res) => {
   try {
     if (!req.file) {
@@ -36,14 +36,27 @@ exports.cloudUpload = async (req, res) => {
     const userId = req.user.userId;
 
     const { scheduledAt } = req.body;
-    if (scheduledAt && isValid(new Date(scheduledAt))) {
-      parsedScheduledAt = new Date(scheduledAt);
+    console.log("Raw scheduledAt from request:", scheduledAt);
+
+    let parsedScheduledAt;
+    if (scheduledAt && moment(scheduledAt).isValid()) {
+      parsedScheduledAt = moment.tz(scheduledAt, "Asia/Kolkata").toDate();
+      console.log(
+        "Parsed scheduledAt as Date object (Asia/Kolkata):",
+        parsedScheduledAt.toISOString()
+      );
     } else {
-      parsedScheduledAt = new Date();
+      parsedScheduledAt = moment().tz("Asia/Kolkata").toDate();
+      console.log(
+        "No valid scheduledAt provided, defaulting to current time (Asia/Kolkata):",
+        parsedScheduledAt.toISOString()
+      );
     }
 
-    console.log("Parsed scheduledAt:", parsedScheduledAt);
-    // const parsedScheduledAt = scheduledAt ? new Date(scheduledAt) : new Date();
+    console.log(
+      "Before adding to queue, parsedScheduledAt:",
+      parsedScheduledAt.toISOString()
+    );
 
     const job = await imageQueue.add({
       file: file64,

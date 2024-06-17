@@ -3,14 +3,13 @@ const { dataUri } = require("../util/data-uri");
 const { cloudinaryUpload } = require("../util/cloudinary");
 const sharp = require("sharp");
 const { PrismaClient } = require("@prisma/client");
-require("dotenv").config;
-
+const moment = require("moment-timezone");
 const prisma = new PrismaClient();
 
 const redisConfig = {
   host: process.env.REDIS_SERVER_HOST,
   port: process.env.REDIS_SERVER_PORT,
-  password: process.env.REDIS_SERVER_PASSWORD, // Add your Redis password here
+  password: process.env.REDIS_SERVER_PASSWORD,
 };
 
 const imageQueue = new Queue("image processing", { redis: redisConfig });
@@ -23,9 +22,15 @@ imageQueue.process(2, async (job) => {
       throw new Error("Input file is missing!");
     }
 
-    console.log("Job Scheduled At:", scheduledAt);
+    console.log("Inside queue, scheduledAt (UTC):", scheduledAt);
 
     const uploadResult = await cloudinaryUpload(file);
+
+    const istScheduledAt = moment.tz(scheduledAt, "Asia/Kolkata");
+    console.log(
+      "Before saving to DB, scheduledAt (ISO string in IST):",
+      istScheduledAt.format()
+    );
 
     await prisma.image.create({
       data: {
